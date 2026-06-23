@@ -1,412 +1,121 @@
-/* ── Reset & base ─────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ================================================================
+   data.js — Données statiques Torn (pays, items, temps de vol)
+   Sources : wiki.torn.com, guides communautaires
+   ================================================================ */
 
-:root {
-  --bg:        #0f1117;
-  --bg2:       #181c27;
-  --bg3:       #1e2335;
-  --border:    rgba(255,255,255,.08);
-  --border2:   rgba(255,255,255,.14);
-  --text:      #e8eaf0;
-  --text2:     #8b90a0;
-  --text3:     #555b70;
-  --accent:    #4f7ef8;
-  --accent2:   #3a5fd0;
-  --green:     #22c55e;
-  --green-bg:  rgba(34,197,94,.1);
-  --amber:     #f59e0b;
-  --amber-bg:  rgba(245,158,11,.1);
-  --red:       #ef4444;
-  --red-bg:    rgba(239,68,68,.1);
-  --blue-bg:   rgba(79,126,248,.1);
-  --radius:    10px;
-  --radius-sm: 6px;
-}
+const COUNTRIES = [
+  {
+    name: 'Mexico', code: 'mex', flag: '🇲🇽',
+    timeMin: { standard: 20, airstrip: 14, wlt: 10 },
+    cost: 5000
+  },
+  {
+    name: 'Cayman Islands', code: 'cay', flag: '🇰🇾',
+    timeMin: { standard: 57, airstrip: 40, wlt: 29 },
+    cost: 10000
+  },
+  {
+    name: 'Canada', code: 'can', flag: '🇨🇦',
+    timeMin: { standard: 37, airstrip: 26, wlt: 19 },
+    cost: 7500
+  },
+  {
+    name: 'Hawaii', code: 'haw', flag: '🇺🇸',
+    timeMin: { standard: 121, airstrip: 85, wlt: 61 },
+    cost: 12000
+  },
+  {
+    name: 'United Kingdom', code: 'uni', flag: '🇬🇧',
+    timeMin: { standard: 159, airstrip: 111, wlt: 80 },
+    cost: 18000
+  },
+  {
+    name: 'Argentina', code: 'arg', flag: '🇦🇷',
+    timeMin: { standard: 189, airstrip: 132, wlt: 95 },
+    cost: 22000
+  },
+  {
+    name: 'Switzerland', code: 'swi', flag: '🇨🇭',
+    timeMin: { standard: 169, airstrip: 118, wlt: 85 },
+    cost: 20000
+  },
+  {
+    name: 'Japan', code: 'jap', flag: '🇯🇵',
+    timeMin: { standard: 203, airstrip: 142, wlt: 102 },
+    cost: 25000
+  },
+  {
+    name: 'China', code: 'chi', flag: '🇨🇳',
+    timeMin: { standard: 242, airstrip: 169, wlt: 121 },
+    cost: 35000
+  },
+  {
+    name: 'UAE', code: 'uae', flag: '🇦🇪',
+    timeMin: { standard: 271, airstrip: 190, wlt: 136 },
+    cost: 32000
+  },
+  {
+    name: 'South Africa', code: 'sou', flag: '🇿🇦',
+    timeMin: { standard: 311, airstrip: 218, wlt: 156 },
+    cost: 40000
+  },
+];
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  font-size: 14px;
-  line-height: 1.6;
-}
+/* Items : buy = prix à l'étranger, sell = prix moyen marché Torn
+   Les prix sell sont des estimations communautaires — la clé API
+   permet de les remplacer par les vraies valeurs du marché. */
+const ITEMS = [
+  /* ─── Plushies ─────────────────────────────────────────────── */
+  { id: 'caiman',   name: 'Caiman Plushie',        country: 'mex', type: 'plushie', buy: 1000,  sell: 120000 },
+  { id: 'jaguar',   name: 'Jaguar Plushie',         country: 'mex', type: 'plushie', buy: 1500,  sell: 200000 },
+  { id: 'stingray', name: 'Stingray Plushie',       country: 'cay', type: 'plushie', buy: 2000,  sell: 160000 },
+  { id: 'wolverine',name: 'Wolverine Plushie',      country: 'can', type: 'plushie', buy: 500,   sell: 100000 },
+  { id: 'lion',     name: 'Lion Plushie',           country: 'sou', type: 'plushie', buy: 3000,  sell: 160000 },
+  { id: 'monkey',   name: 'Monkey Plushie',         country: 'arg', type: 'plushie', buy: 2500,  sell: 200000 },
+  { id: 'chamois',  name: 'Chamois Plushie',        country: 'swi', type: 'plushie', buy: 2000,  sell: 130000 },
+  { id: 'nessie',   name: 'Nessie Plushie',         country: 'uni', type: 'plushie', buy: 2500,  sell: 160000 },
+  { id: 'redfox',   name: 'Red Fox Plushie',        country: 'uni', type: 'plushie', buy: 2000,  sell: 160000 },
+  { id: 'panda',    name: 'Panda Plushie',          country: 'chi', type: 'plushie', buy: 3000,  sell: 300000 },
+  { id: 'camel',    name: 'Camel Plushie',          country: 'uae', type: 'plushie', buy: 4000,  sell: 350000 },
+  { id: 'cherry_p', name: 'Cherry Blossom Plushie', country: 'jap', type: 'plushie', buy: 2500,  sell: 220000 },
 
-/* ── Header ───────────────────────────────────────────────────── */
-header {
-  background: var(--bg2);
-  border-bottom: 1px solid var(--border);
-  padding: 0 1.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.header-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 56px;
-}
-.logo { display: flex; align-items: center; gap: 10px; }
-.logo-icon { font-size: 20px; }
-.logo-title { font-size: 15px; font-weight: 600; color: var(--text); }
-.logo-sub { font-size: 11px; color: var(--text2); }
-.header-actions { display: flex; align-items: center; gap: 12px; }
-.last-fetch-info { font-size: 11px; color: var(--text3); }
+  /* ─── Flowers ──────────────────────────────────────────────── */
+  { id: 'dahlia',   name: 'Dahlia',                 country: 'mex', type: 'flower',  buy: 500,   sell: 50000  },
+  { id: 'orchid_b', name: 'Banana Orchid',          country: 'cay', type: 'flower',  buy: 600,   sell: 55000  },
+  { id: 'trillium', name: 'Trillium',               country: 'can', type: 'flower',  buy: 400,   sell: 45000  },
+  { id: 'violet',   name: 'African Violet',         country: 'sou', type: 'flower',  buy: 600,   sell: 55000  },
+  { id: 'ceibo',    name: 'Ceibo',                  country: 'arg', type: 'flower',  buy: 800,   sell: 65000  },
+  { id: 'edelweiss',name: 'Edelweiss',              country: 'swi', type: 'flower',  buy: 700,   sell: 60000  },
+  { id: 'heather',  name: 'Heather',                country: 'uni', type: 'flower',  buy: 500,   sell: 55000  },
+  { id: 'peony',    name: 'Peony',                  country: 'chi', type: 'flower',  buy: 1500,  sell: 130000 },
+  { id: 'tribulus', name: 'Tribulus Omanense',      country: 'uae', type: 'flower',  buy: 2000,  sell: 200000 },
+  { id: 'cherry_f', name: 'Cherry Blossom',         country: 'jap', type: 'flower',  buy: 1200,  sell: 110000 },
+  { id: 'orchid',   name: 'Orchid',                 country: 'haw', type: 'flower',  buy: 800,   sell: 75000  },
 
-/* ── Layout ───────────────────────────────────────────────────── */
-main { max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
-.layout {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 1.5rem;
-  align-items: start;
-}
+  /* ─── Drugs ────────────────────────────────────────────────── */
+  { id: 'cannabis', name: 'Cannabis',               country: 'mex', type: 'drug',    buy: 500,   sell: 30000  },
+  { id: 'cocaine',  name: 'Cocaine',                country: 'arg', type: 'drug',    buy: 5000,  sell: 90000  },
+  { id: 'ecstasy',  name: 'Ecstasy',                country: 'uni', type: 'drug',    buy: 3000,  sell: 70000  },
+  { id: 'shrooms',  name: 'Shrooms',                country: 'can', type: 'drug',    buy: 400,   sell: 25000  },
+  { id: 'opium',    name: 'Opium',                  country: 'chi', type: 'drug',    buy: 8000,  sell: 150000 },
+  { id: 'xanax',    name: 'Xanax',                  country: 'swi', type: 'drug',    buy: 250,   sell: 800000 },
+  { id: 'lsd',      name: 'LSD',                    country: 'jap', type: 'drug',    buy: 2000,  sell: 60000  },
+  { id: 'ketamine', name: 'Ketamine',               country: 'uae', type: 'drug',    buy: 6000,  sell: 110000 },
+  { id: 'vicodin',  name: 'Vicodin',                country: 'haw', type: 'drug',    buy: 1000,  sell: 20000  },
+  { id: 'melatonin',name: 'Melatonin',              country: 'sou', type: 'drug',    buy: 200,   sell: 15000  },
+];
 
-/* ── Sidebar / Cards ──────────────────────────────────────────── */
-.sidebar { display: flex; flex-direction: column; gap: 1rem; }
+/* Couleurs par type d'item */
+const TYPE_COLORS = {
+  plushie: '#8b5cf6',
+  flower:  '#22c55e',
+  drug:    '#f59e0b',
+  other:   '#60a5fa',
+};
 
-.card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1rem;
-}
-
-.card-title {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  color: var(--text2);
-  margin-bottom: .75rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-label {
-  display: block;
-  font-size: 12px;
-  color: var(--text2);
-  margin-bottom: .5rem;
-  margin-top: .5rem;
-}
-label:first-of-type { margin-top: 0; }
-
-input[type="text"],
-input[type="password"],
-select {
-  display: block;
-  width: 100%;
-  margin-top: 4px;
-  padding: 7px 10px;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-size: 13px;
-  outline: none;
-  transition: border-color .15s;
-}
-input:focus, select:focus { border-color: var(--accent); }
-select option { background: var(--bg2); }
-
-.hint {
-  font-size: 11px;
-  color: var(--text3);
-  margin-top: 4px;
-  line-height: 1.5;
-}
-
-/* ── Sliders ──────────────────────────────────────────────────── */
-.slider-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 4px;
-}
-.slider-val { font-size: 13px; font-weight: 600; color: var(--accent); min-width: 36px; text-align: right; }
-input[type="range"] {
-  flex: 1;
-  -webkit-appearance: none;
-  height: 4px;
-  background: var(--bg3);
-  border-radius: 2px;
-  outline: none;
-  border: none;
-  padding: 0;
-}
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  background: var(--accent);
-  cursor: pointer;
-  border: 2px solid var(--bg2);
-}
-input[type="range"]::-moz-range-thumb {
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  background: var(--accent);
-  cursor: pointer;
-  border: 2px solid var(--bg2);
-}
-
-/* ── Capacity chip ────────────────────────────────────────────── */
-.capacity-chip {
-  margin-top: .75rem;
-  background: var(--blue-bg);
-  border: 1px solid rgba(79,126,248,.2);
-  border-radius: var(--radius-sm);
-  padding: .5rem .75rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 13px;
-  color: var(--text2);
-}
-.capacity-chip strong { font-size: 18px; font-weight: 700; color: var(--accent); }
-
-/* ── Checkboxes ───────────────────────────────────────────────── */
-.checkbox-group { display: flex; flex-direction: column; gap: 5px; margin-top: 4px; }
-.cb-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-size: 13px;
-  color: var(--text);
-}
-.cb-label input[type="checkbox"] {
-  width: 15px; height: 15px;
-  accent-color: var(--accent);
-  cursor: pointer;
-  display: inline;
-  margin: 0;
-}
-
-/* ── Country filter buttons ───────────────────────────────────── */
-.country-filter-grid { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
-.country-btn {
-  font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 20px;
-  border: 1px solid var(--border2);
-  background: transparent;
-  color: var(--text2);
-  cursor: pointer;
-  transition: all .15s;
-}
-.country-btn.excluded {
-  background: var(--red-bg);
-  border-color: rgba(239,68,68,.3);
-  color: var(--red);
-  text-decoration: line-through;
-}
-
-/* ── Buttons ──────────────────────────────────────────────────── */
-.btn-icon {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-size: 13px;
-  cursor: pointer;
-  transition: background .15s;
-}
-.btn-icon:hover { background: var(--accent2); border-color: var(--accent); }
-.btn-icon.loading svg { animation: spin .8s linear infinite; }
-
-.btn-sm {
-  margin-top: 6px;
-  padding: 5px 12px;
-  background: var(--bg3);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-size: 12px;
-  cursor: pointer;
-}
-.btn-sm:hover { border-color: var(--accent); }
-
-.btn-primary {
-  padding: 10px 24px;
-  background: var(--accent);
-  border: none;
-  border-radius: var(--radius-sm);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 1rem;
-  transition: background .15s;
-}
-.btn-primary:hover { background: var(--accent2); }
-
-.key-status { font-size: 11px; margin-left: 8px; color: var(--green); }
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── Banners ──────────────────────────────────────────────────── */
-.banner {
-  border-radius: var(--radius-sm);
-  padding: .65rem 1rem;
-  font-size: 13px;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.banner-info  { background: var(--blue-bg);  border: 1px solid rgba(79,126,248,.2); color: #7ba7ff; }
-.banner-warn  { background: var(--amber-bg); border: 1px solid rgba(245,158,11,.2); color: var(--amber); }
-.banner-error { background: var(--red-bg);   border: 1px solid rgba(239,68,68,.2);  color: var(--red); }
-
-/* ── Summary cards ────────────────────────────────────────────── */
-.summary-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: .75rem;
-  margin-bottom: 1.25rem;
-}
-.stat-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: .75rem 1rem;
-  text-align: center;
-}
-.stat-val { font-size: 22px; font-weight: 700; }
-.stat-lbl { font-size: 11px; color: var(--text2); margin-top: 2px; }
-.green  { color: var(--green); }
-.amber  { color: var(--amber); }
-.red    { color: var(--red); }
-.accent { color: var(--accent); }
-
-/* ── Run cards ────────────────────────────────────────────────── */
-.run-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.25rem;
-  margin-bottom: .75rem;
-  position: relative;
-  transition: border-color .2s;
-}
-.run-card:hover { border-color: var(--border2); }
-.run-card.best { border-color: rgba(79,126,248,.45); }
-
-.run-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-}
-.run-left { display: flex; align-items: center; gap: 10px; }
-.run-flag { font-size: 24px; }
-.run-country { font-size: 16px; font-weight: 600; }
-.run-meta-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-
-.chip {
-  font-size: 11px;
-  padding: 2px 8px;
-  border-radius: 20px;
-  border: 1px solid var(--border2);
-  color: var(--text2);
-}
-.chip-green  { background: var(--green-bg); border-color: rgba(34,197,94,.2); color: var(--green); }
-.chip-amber  { background: var(--amber-bg); border-color: rgba(245,158,11,.2); color: var(--amber); }
-.chip-red    { background: var(--red-bg);   border-color: rgba(239,68,68,.2);  color: var(--red); }
-.chip-blue   { background: var(--blue-bg);  border-color: rgba(79,126,248,.2); color: #7ba7ff; }
-
-.run-profit-block { text-align: right; }
-.profit-total { font-size: 24px; font-weight: 700; color: var(--green); }
-.profit-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
-
-.run-divider { border: none; border-top: 1px solid var(--border); margin: .75rem 0; }
-
-.run-profit-row {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: .75rem;
-}
-.prow-item { }
-.prow-label { font-size: 11px; color: var(--text2); }
-.prow-val { font-size: 15px; font-weight: 600; }
-
-.items-grid { display: flex; flex-wrap: wrap; gap: 6px; }
-
-.item-chip {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  background: var(--bg3);
-}
-.item-chip .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.item-chip .qty { font-weight: 600; }
-.item-chip .gain { color: var(--text2); }
-
-.run-timeline {
-  margin-top: .75rem;
-  padding-top: .75rem;
-  border-top: 1px solid var(--border);
-  font-size: 11px;
-  color: var(--text3);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.tl-step {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--text2);
-}
-.tl-sep { color: var(--text3); }
-
-.best-badge {
-  position: absolute;
-  top: -1px; right: 14px;
-  background: var(--accent);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 10px;
-  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-  letter-spacing: .04em;
-}
-
-/* ── Empty state ──────────────────────────────────────────────── */
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
-  text-align: center;
-}
-.empty-icon { font-size: 48px; margin-bottom: 1rem; }
-.empty-title { font-size: 18px; font-weight: 600; margin-bottom: .5rem; }
-.empty-sub { color: var(--text2); font-size: 14px; max-width: 360px; line-height: 1.7; }
-
-/* ── Responsive ───────────────────────────────────────────────── */
-@media (max-width: 900px) {
-  .layout { grid-template-columns: 1fr; }
-  .summary-row { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 480px) {
-  main { padding: 1rem; }
-  .summary-row { grid-template-columns: 1fr 1fr; }
-  header { padding: 0 1rem; }
-}
+const TYPE_LABELS = {
+  plushie: 'Peluche',
+  flower:  'Fleur',
+  drug:    'Drogue',
+  other:   'Autre',
+};
