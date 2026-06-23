@@ -24,58 +24,6 @@ Calcule les meilleurs runs à l'étranger en fonction de :
 
 ---
 
-## 🚀 Déploiement sur GitHub Pages
-
-### Étape 1 — Créer le dépôt
-
-1. Va sur [github.com](https://github.com) et connecte-toi
-2. Clique sur **New repository**
-3. Nom : `torn-travel-optimizer` (ou ce que tu veux)
-4. Laisse **Public** coché (requis pour GitHub Pages gratuit)
-5. Clique **Create repository**
-
-### Étape 2 — Uploader les fichiers
-
-**Option A — via l'interface web GitHub (plus simple)**
-
-1. Dans ton dépôt vide, clique **uploading an existing file**
-2. Glisse-dépose TOUS les fichiers/dossiers du projet :
-   ```
-   index.html
-   css/style.css
-   js/data.js
-   js/app.js
-   README.md
-   ```
-3. Clique **Commit changes**
-
-**Option B — via Git (si tu as Git installé)**
-
-```bash
-cd torn-travel-optimizer
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/TON_USERNAME/torn-travel-optimizer.git
-git push -u origin main
-```
-
-### Étape 3 — Activer GitHub Pages
-
-1. Dans ton dépôt, va dans **Settings** (onglet en haut)
-2. Dans le menu gauche, clique **Pages**
-3. Sous *Source*, sélectionne **Deploy from a branch**
-4. Branch : `main`, dossier : `/ (root)`
-5. Clique **Save**
-
-Ton site sera disponible en quelques minutes sur :
-```
-https://TON_USERNAME.github.io/torn-travel-optimizer/
-```
-
----
-
 ## 🔑 Clé API Torn
 
 Pour récupérer les **prix du marché en temps réel**, ajoute ta clé API :
