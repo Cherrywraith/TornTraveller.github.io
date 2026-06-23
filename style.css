@@ -604,3 +604,21 @@ input[type="time"]:focus { border-color: var(--accent); outline: none; }
   .summary-row { grid-template-columns: 1fr 1fr; }
   header { padding: 0 1rem; }
 }
+
+/* ── Item rows dans les run cards ─────────────────────────────── */
+.items-stack { display: flex; flex-direction: column; gap: 8px; margin: .75rem 0; }
+
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.item-row-info { flex: 1; min-width: 0; }
+.item-row-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item-row-sub  { font-size: 11px; color: var(--text2); margin-top: 2px; }
+.item-row-right { text-align: right; flex-shrink: 0; }
+.item-row-profit { font-size: 15px; font-weight: 700; color: var(--green); }
