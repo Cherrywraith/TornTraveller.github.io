@@ -8,7 +8,6 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>" />
 </head>
 <body>
-
   <header>
     <div class="header-inner">
       <div class="logo">
@@ -20,8 +19,8 @@
       </div>
       <div class="header-actions">
         <span id="lastFetchInfo" class="last-fetch-info"></span>
-        <button id="refreshBtn" class="btn-icon" onclick="fetchAndCompute()" title="Rafraîchir les stocks YATA">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <button id="refreshBtn" class="btn-icon" onclick="fetchAndCompute()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
           Actualiser YATA
         </button>
       </div>
@@ -33,11 +32,8 @@
       <aside class="sidebar">
 
         <div class="card">
-          <div class="card-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            Clé API Torn
-          </div>
-          <input type="password" id="apiKey" placeholder="Clé publique (optionnel)" autocomplete="off" />
+          <div class="card-title">🔑 Clé API Torn</div>
+          <input type="password" id="apiKey" placeholder="Clé publique (optionnel)" autocomplete="off"/>
           <p class="hint">Niveau "Public Only" — pour les prix marché temps réel.</p>
           <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
             <button class="btn-sm" onclick="saveKey()">Enregistrer</button>
@@ -46,20 +42,17 @@
         </div>
 
         <div class="card">
-          <div class="card-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Session de jeu
-          </div>
+          <div class="card-title">⏱ Session de jeu</div>
           <label>Heure de départ
             <div style="display:flex;gap:6px;margin-top:4px">
               <button class="btn-time active" id="btnNow" onclick="setDepartNow()">Maintenant</button>
-              <input type="time" id="departTime" onchange="setDepartCustom()" />
+              <input type="time" id="departTime" onchange="setDepartCustom()"/>
             </div>
           </label>
           <label>Durée de session
             <div class="slider-row">
               <input type="range" id="sessionHours" min="1" max="24" value="8" step="1"
-                oninput="document.getElementById('sessionHoursVal').textContent=this.value+'h';scheduleRecompute()" />
+                oninput="document.getElementById('sessionHoursVal').textContent=this.value+'h';scheduleRecompute()"/>
               <span id="sessionHoursVal" class="slider-val">8h</span>
             </div>
           </label>
@@ -74,14 +67,11 @@
         </div>
 
         <div class="card">
-          <div class="card-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Préférences de voyage
-          </div>
+          <div class="card-title">✈ Préférences de voyage</div>
           <label>Longueur minimale du vol
             <div class="slider-row">
               <input type="range" id="minFlightTime" min="0" max="310" value="0" step="10"
-                oninput="updateFlightLabel();scheduleRecompute()" />
+                oninput="updateFlightLabel();scheduleRecompute()"/>
               <span id="minFlightLabel" class="slider-val" style="min-width:60px">Tous</span>
             </div>
             <p class="hint" id="minFlightHint">Toutes les destinations incluses.</p>
@@ -89,7 +79,7 @@
           <label>Nombre max de trips
             <select id="maxTrips" onchange="scheduleRecompute()">
               <option value="999">Pas de limite</option>
-              <option value="1">1 seul trip</option>
+              <option value="1">1 trip</option>
               <option value="2">2 trips max</option>
               <option value="3">3 trips max</option>
               <option value="5">5 trips max</option>
@@ -98,17 +88,13 @@
           <label>Fin de session
             <select id="finishAbroad" onchange="scheduleRecompute()">
               <option value="no">Retour à Torn obligatoire</option>
-              <option value="yes">Peut finir à l'étranger (cours, travail…)</option>
+              <option value="yes">Peut finir à l'étranger</option>
             </select>
           </label>
-          <p class="hint">Si "finit à l'étranger", le dernier aller ne compte pas le vol retour — permet un trip de plus.</p>
         </div>
 
         <div class="card">
-          <div class="card-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 21 4s-2 0-3.5 1.5L14 9 5.8 7.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 3.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.1z"/></svg>
-            Mode de vol
-          </div>
+          <div class="card-title">🎒 Mode de vol</div>
           <label>Type de voyage
             <select id="flightMode" onchange="updateCapacity();scheduleRecompute()">
               <option value="standard">Standard — 5 items</option>
@@ -127,11 +113,11 @@
           <label>Bonus faction (Excursion)
             <div class="slider-row">
               <input type="range" id="factionBonus" min="0" max="10" value="0" step="1"
-                oninput="document.getElementById('factionBonusVal').textContent='+'+this.value;updateCapacity();scheduleRecompute()" />
+                oninput="document.getElementById('factionBonusVal').textContent='+'+this.value;updateCapacity();scheduleRecompute()"/>
               <span id="factionBonusVal" class="slider-val">+0</span>
             </div>
           </label>
-          <label>Lingerie Store (5★)
+          <label>Lingerie Store (3★)
             <select id="lingerieBonus" onchange="updateCapacity();scheduleRecompute()">
               <option value="0">Non</option>
               <option value="2">Oui (+2)</option>
@@ -141,7 +127,7 @@
             <select id="cruiseBonus" onchange="updateCapacity();scheduleRecompute()">
               <option value="0">Non</option>
               <option value="2">3★ (+2)</option>
-              <option value="3">10★ (+3)</option>
+              <option value="5">3★ + 10★ (+5)</option>
             </select>
           </label>
           <div class="capacity-chip">
@@ -151,10 +137,7 @@
         </div>
 
         <div class="card">
-          <div class="card-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-            Bonus de job
-          </div>
+          <div class="card-title">💼 Bonus de job</div>
           <p class="hint">Slots supplémentaires pour le type d'item concerné uniquement.</p>
           <label>Toy Shop (7★) — peluches
             <select id="jobToy" onchange="scheduleRecompute()">
@@ -171,10 +154,7 @@
         </div>
 
         <div class="card">
-          <div class="card-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-            Filtres
-          </div>
+          <div class="card-title">🔍 Filtres</div>
           <label>Types d'items</label>
           <div class="checkbox-group">
             <label class="cb-label"><input type="checkbox" id="f_plushie" checked onchange="scheduleRecompute()"><span>🧸 Peluches</span></label>
@@ -195,24 +175,52 @@
 
         <button class="btn-recalc" onclick="scheduleRecompute()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-          Recalculer les runs
+          Recalculer
         </button>
 
       </aside>
 
       <section class="results">
         <div id="statusBanner" class="banner banner-info" style="display:none"></div>
-        <div id="summaryCards" class="summary-row" style="display:none">
-          <div class="stat-card"><div class="stat-val" id="s_runs">—</div><div class="stat-lbl">destinations</div></div>
-          <div class="stat-card"><div class="stat-val green" id="s_bestProfit">—</div><div class="stat-lbl">meilleur profit total</div></div>
-          <div class="stat-card"><div class="stat-val" id="s_bestTrips">—</div><div class="stat-lbl">trips (meilleur run)</div></div>
-          <div class="stat-card"><div class="stat-val" id="s_bestPerHour">—</div><div class="stat-lbl">$/heure</div></div>
+
+        <!-- Stats globales du meilleur run -->
+        <div id="globalStats" class="global-stats" style="display:none">
+          <div class="gstat">
+            <div class="gstat-label">PROFIT</div>
+            <div class="gstat-val green" id="gs_profit">—</div>
+          </div>
+          <div class="gstat">
+            <div class="gstat-label">PROFIT/HEURE</div>
+            <div class="gstat-val" id="gs_pph">—</div>
+          </div>
+          <div class="gstat">
+            <div class="gstat-label">CASH REQUIS</div>
+            <div class="gstat-val" id="gs_cash">—</div>
+          </div>
+          <div class="gstat">
+            <div class="gstat-label">TRIPS</div>
+            <div class="gstat-val" id="gs_trips">—</div>
+          </div>
         </div>
-        <div id="runList"></div>
+
+        <!-- Timeline principale (meilleur run) -->
+        <div id="bestRunTimeline" style="display:none">
+          <div class="section-label">Meilleur run</div>
+          <div id="timelineContainer" class="timeline-scroll-wrap">
+            <div id="timelineInner" class="timeline-inner"></div>
+          </div>
+        </div>
+
+        <!-- Autres runs -->
+        <div id="otherRuns" style="display:none">
+          <div class="section-label" style="margin-top:1.5rem">Autres options</div>
+          <div id="otherRunsList"></div>
+        </div>
+
         <div id="emptyState" class="empty-state">
           <div class="empty-icon">✈️</div>
           <div class="empty-title">Prêt à décoller</div>
-          <div class="empty-sub">Clique sur <strong>Actualiser YATA</strong> pour charger les stocks en temps réel, ou <strong>Recalculer</strong> si tu as déjà des données en cache.</div>
+          <div class="empty-sub">Clique sur <strong>Actualiser YATA</strong> pour charger les stocks, ou <strong>Recalculer</strong> si tu as déjà des données en cache.</div>
           <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:1rem">
             <button class="btn-primary" onclick="fetchAndCompute()">Actualiser YATA + Calculer</button>
             <button class="btn-secondary" onclick="compute()">Recalculer (cache)</button>
@@ -222,6 +230,7 @@
     </div>
   </main>
 
+  <!-- Modal détail stock -->
   <div id="timelineModal" class="modal-overlay" onclick="closeModal(event)" style="display:none">
     <div class="modal-box" onclick="event.stopPropagation()">
       <div class="modal-header">
